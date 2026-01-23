@@ -6,7 +6,7 @@ pipeline {
             steps {
                 git branch: 'main',
                    credentialsId: 'github-token',
-                   url: 'https://github.com/Sejal075/jenkins.git'
+                   url: 'https://github.com/Sejal075/jenkin.git'
             }
         }
 
