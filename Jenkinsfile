@@ -2,34 +2,26 @@ pipeline {
     agent any
 
     stages {
-
         stage('Clone Repository') {
             steps {
                 git branch: 'main',
-                    credentialsId: 'github-token',
                     url: 'https://github.com/Sejal075/jenkin.git'
             }
         }
 
-        stage('Build Docker Image') {
+        stage('Build/Run App') {
             steps {
-                sh 'docker build -t myapp:latest .'
-            }
-        }
-
-        stage('Run Docker Container') {
-            steps {
-                sh '''
-                docker rm -f myapp || true
-                docker run -d -p 80:3000 --name myapp myapp:latest
-                '''
+                echo "This is where you can build or run your app without Docker"
+                // Example: run a Node.js app
+                // sh 'npm install'
+                // sh 'node app.js'
             }
         }
     }
 
     post {
         success {
-            echo '✅ Application deployed successfully'
+            echo '✅ Pipeline completed successfully'
         }
         failure {
             echo '❌ Pipeline failed'
