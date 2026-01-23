@@ -2,11 +2,12 @@ pipeline {
     agent any
 
     stages {
-        stage('Clone Repo') {
+
+        stage('Clone Repository') {
             steps {
                 git branch: 'main',
-                   credentialsId: 'github-token',
-                   url: 'https://github.com/Sejal075/jenkin.git'
+                    credentialsId: 'github-token',
+                    url: 'https://github.com/Sejal075/jenkin.git'
             }
         }
 
@@ -16,13 +17,22 @@ pipeline {
             }
         }
 
-        stage('Run Container') {
+        stage('Run Docker Container') {
             steps {
                 sh '''
                 docker rm -f myapp || true
                 docker run -d -p 80:3000 --name myapp myapp:latest
                 '''
             }
+        }
+    }
+
+    post {
+        success {
+            echo '✅ Application deployed successfully'
+        }
+        failure {
+            echo '❌ Pipeline failed'
         }
     }
 }
