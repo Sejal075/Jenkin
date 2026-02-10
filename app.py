@@ -7,12 +7,12 @@ GAMES = {
         "grid": [
             list("APPLERQTY"),
             list("BNANAZXCV"),
-            list("ORANGEMP"),
-            list("GRAPEFJK"),
-            list("MANGOLIU"),
-            list("CHERRYOP"),
-            list("KIWIBERR"),
-            list("PEACHXYZ")
+            list("ORANGEMPI"),
+            list("GRAPEFJKS"),
+            list("MANGOLIUG"),
+            list("CHERRYOPY"),
+            list("KIWIBERRC"),
+            list("PEACHXYZX")
         ],
         "words": ["APPLE", "BANANA", "ORANGE", "GRAPE", "MANGO", "CHERRY"]
     },
