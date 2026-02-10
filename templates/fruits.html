@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ category }}</title>
+</head>
+<body>
+    <h2>{{ category }} Puzzle</h2>
+
+    <table border="1">
+        {% for row in grid %}
+        <tr>
+            {% for letter in row %}
+            <td>{{ letter }}</td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </table>
+
+    <h3>Find these words:</h3>
+    <ul>
+        {% for word in words %}
+        <li>{{ word }}</li>
+        {% endfor %}
+    </ul>
+
+    <input id="word" placeholder="Enter word">
+    <button onclick="checkWord()">Check</button>
+
+    <p id="result"></p>
+
+    <script>
+        function checkWord() {
+            fetch("/check/fruits", {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({word: document.getElementById("word").value})
+            })
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById("result").innerText =
+                    data.valid ? "✅ Correct!" : "❌ Try again";
+            });
+        }
+    </script>
+</body>
+</html>
