@@ -1,20 +1,58 @@
 pipeline {
     agent any
 
+    environment {
+        IMAGE_NAME = "word-game"
+        CONTAINER_NAME = "word-game-container"
+        PORT = "5000"
+    }
+
     stages {
-        stage('Build') {
+
+        stage('Checkout Code') {
             steps {
-                sh 'docker build -t find-the-word .'
+                git branch: 'main',
+                    url: 'https://github.com/YOUR_USERNAME/YOUR_REPO.git'
             }
         }
-        stage('Deploy') {
+
+        stage('Build Docker Image') {
             steps {
                 sh '''
-                docker stop find-the-word || true
-                docker rm find-the-word || true
-                docker run -d -p 80:5000 --name find-the-word find-the-word
+                docker build -t $IMAGE_NAME .
                 '''
             }
+        }
+
+        stage('Stop Old Container') {
+            steps {
+                sh '''
+                if [ $(docker ps -aq -f name=$CONTAINER_NAME) ]; then
+                    docker stop $CONTAINER_NAME
+                    docker rm $CONTAINER_NAME
+                fi
+                '''
+            }
+        }
+
+        stage('Run New Container') {
+            steps {
+                sh '''
+                docker run -d \
+                --name $CONTAINER_NAME \
+                -p $PORT:5000 \
+                $IMAGE_NAME
+                '''
+            }
+        }
+    }
+
+    post {
+        success {
+            echo "✅ Deployment successful!"
+        }
+        failure {
+            echo "❌ Deployment failed!"
         }
     }
 }
