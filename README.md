@@ -89,7 +89,7 @@ docker run -d -p 5000:5000 --name word-game word-game
 Access the app:
 
 ```
-http://:5000
+http://3.128.26.178:5000
 ```
 
 ---
