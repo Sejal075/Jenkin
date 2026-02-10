@@ -1,46 +1,56 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>{{ category }}</title>
+    <title>{{ category }} Puzzle</title>
+
+    <!-- LINK YOUR SINGLE CSS FILE -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h2>{{ category }} Puzzle</h2>
 
-    <table border="1">
-        {% for row in grid %}
-        <tr>
-            {% for letter in row %}
-            <td>{{ letter }}</td>
+<div class="page-container">
+
+    <h2 class="page-title">{{ category }} Puzzle</h2>
+
+    <div class="game-box">
+        <table class="grid">
+            {% for row in grid %}
+            <tr>
+                {% for letter in row %}
+                <td>{{ letter }}</td>
+                {% endfor %}
+            </tr>
             {% endfor %}
-        </tr>
-        {% endfor %}
-    </table>
+        </table>
 
-    <h3>Find these words:</h3>
-    <ul>
-        {% for word in words %}
-        <li>{{ word }}</li>
-        {% endfor %}
-    </ul>
+        <div class="controls">
+            <input id="word" placeholder="Enter word">
+            <button onclick="checkWord()">Check</button>
+        </div>
 
-    <input id="word" placeholder="Enter word">
-    <button onclick="checkWord()">Check</button>
+        <p id="result"></p>
+    </div>
 
-    <p id="result"></p>
+    <a href="/" class="back-btn">⬅ Back to Home</a>
 
-    <script>
-        function checkWord() {
-            fetch("/check/vehicles", {
-                method: "POST",
-                headers: {"Content-Type": "application/json"},
-                body: JSON.stringify({word: document.getElementById("word").value})
+</div>
+
+<script>
+    function checkWord() {
+        fetch("/check/{{ category | lower }}", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({
+                word: document.getElementById("word").value
             })
-            .then(res => res.json())
-            .then(data => {
-                document.getElementById("result").innerText =
-                    data.valid ? "✅ Correct!" : "❌ Try again";
-            });
-        }
-    </script>
+        })
+        .then(res => res.json())
+        .then(data => {
+            document.getElementById("result").innerText =
+                data.valid ? "✅ Correct!" : "❌ Try again";
+        });
+    }
+</script>
+
 </body>
 </html>
